@@ -15,7 +15,7 @@ class MessagesController < ApplicationController
     
     bot = Voxanon::FB::Bot.new
     params[:filters].each do |name, url|
-      bot.tell_user_their_audio_is_ready({user_id: params[:sender_id][:id], url: url})
+      bot.tell_user_their_audio_is_ready({filter_name: name, user_id: params[:sender_id][:id], url: url})
     end
     # return 404 unless message
   end

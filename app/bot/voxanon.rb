@@ -37,6 +37,10 @@ MESSAGE
       end
       
       def tell_user_their_audio_is_ready(params)
+        ::Bot.deliver(recipient: 
+          {id: params[:user_id]},
+          message:{ text: params[:filter_name] }}, 
+          access_token: ENV['ACCESS_TOKEN'])
         ::Bot.deliver({recipient: 
           {id: params[:user_id]},
           message:{ attachment:{type:"audio", payload: {url:params[:url]}}}}, 
