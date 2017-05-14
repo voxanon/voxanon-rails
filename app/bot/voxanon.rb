@@ -13,7 +13,7 @@ module Voxanon
             url = "https://process.text.audio/process"
             begin
               Rails.logger.info("Posting message (#{message.id}) to #{url}")
-              HTTParty.post(url, {fb_id: message.id, fb_audio_url: attachments.first["url"]})
+              HTTParty.post(url, {fb_id: message.id, fb_audio_url: attachments.first["payload"]["url"]})
             end
             
             # tell the user that we'll send them a message after we've munged the audio
