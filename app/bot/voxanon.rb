@@ -4,7 +4,7 @@ module Voxanon
   module FB
     class Bot
       def respond_to_user(message)
-        response = if message.attachments and not message.attachments.any?{ |thing| thing["type"] == "audio" }
+        response = if message.attachments and not message.attachments.any?{ |thing| thing["payload"]["type"] == "audio" }
           #message = Message.new_from_fb(message)
           if true # message.valid?
             #message.save
