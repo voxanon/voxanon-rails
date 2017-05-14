@@ -5,14 +5,15 @@ module Voxanon
     class Bot
       def respond_to_user(message)
         response = if message.attachments and not message.attachments.any?{ |thing| thing["type"] == "audio" }
-          message = Message.new_from_fb(message)
-          if message.valid?
-            message.save
+          #message = Message.new_from_fb(message)
+          if true # message.valid?
+            #message.save
             # post the audio file to Robert
           
             url = "https://process.text.audio/process"
             begin
-              HTTParty.post(url, message.attributes.to_json)
+              Rails.logger.info("Posting message (#{message.}) to #{url}")
+              HTTParty.post(url, {fb_id: message.id, fb_audio_url: attachments.first["url"]})
             end
             
             # tell the user that we'll send them a message after we've munged the audio
