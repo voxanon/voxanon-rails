@@ -10,6 +10,6 @@ unless Rails.env.production?
   #end
 
   bot_files.each { |file| require_dependency file }
+else
+  Facebook::Messenger::Subscriptions.subscribe(access_token: ENV['ACCESS_TOKEN'])
 end
-
-Facebook::Messenger::Subscriptions.subscribe(access_token: ENV['ACCESS_TOKEN'])
