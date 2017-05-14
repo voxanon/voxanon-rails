@@ -13,7 +13,7 @@ module Voxanon
             url = "https://process.text.audio/process"
             begin
               Rails.logger.info("Posting message (#{message.id}) to #{url}")
-              HTTParty.post(url, body: {fb_id: message.id, fb_audio_url: message.attachments.first["payload"]["url"]}.to_json)
+              HTTParty.post(url, body: {sender_id: message.sender, fb_id: message.id, fb_audio_url: message.attachments.first["payload"]["url"]}.to_json)
             end
             
             # tell the user that we'll send them a message after we've munged the audio
@@ -36,8 +36,13 @@ MESSAGE
         message.reply(response)
       end
       
-      def tell_user_their_audio_is_ready(message)
-        message.sender
+      def tell_user_their_audio_is_ready(params)
+        Bot.deliver({recipient: 
+          {id: params[:user_id]},
+          message:{ attachment:{type:"audio", payload: {url:params[:url]}}}}, 
+          access_token: ENV['ACCESS_TOKEN']
+        )
+        
       end
     end
   end
