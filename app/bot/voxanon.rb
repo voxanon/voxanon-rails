@@ -4,7 +4,12 @@ module Voxanon
   module FB
     class Bot
       def respond_to_user(message)
-        response = if message.attachments.empty?
+        response = if message.attachments and not message.attachments.empty?
+          # post the audio file to Robert
+          
+          # tell the user that we'll send them a message after we've munged the audio
+          { text: "Thanks! Let us process this for a second..." }
+        else
           # tell the user how to send audio
           { 
             text: <<-MESSAGE
@@ -13,11 +18,6 @@ Hi from VoxAnon! Here’s how you can share your story with the world.
 If you are ready to share right now, press and hold the record button - hold the phone 6 inches from your mouth, speak clearly, not too loudly, not too softly.
 MESSAGE
           }
-        else
-          # post the audio file to Robert
-          
-          # tell the user that we'll send them a message after we've munged the audio
-          { text: "Thanks! Let us process this for a second..." }
         end
         #message.reply(text: 'Hello, human!')
         message.reply(response)
@@ -35,14 +35,14 @@ Bot.on :message do |message|
   
   bot.respond_to_user(message)
   
-  #Rails.logger.info "\n==================================="
-  #Rails.logger.info message.id          # => 'mid.1457764197618:41d102a3e1ae206a38'
-  #Rails.logger.info message.sender      # => { 'id' => '1008372609250235' }
-  #Rails.logger.info message.seq         # => 73
-  #Rails.logger.info message.sent_at     # => 2016-04-22 21:30:36 +0200
-  #Rails.logger.info message.text        # => 'Hello, bot!'
-  #Rails.logger.info message.attachments # => [ { 'type' => 'image', 'payload' => { 'url' => 'https://www.example.com/1.jpg' } } ]
-  #Rails.logger.info "\n===================================\n"
+  Rails.logger.info "\n==================================="
+  Rails.logger.info message.id          # => 'mid.1457764197618:41d102a3e1ae206a38'
+  Rails.logger.info message.sender      # => { 'id' => '1008372609250235' }
+  Rails.logger.info message.seq         # => 73
+  Rails.logger.info message.sent_at     # => 2016-04-22 21:30:36 +0200
+  Rails.logger.info message.text        # => 'Hello, bot!'
+  Rails.logger.info message.attachments # => [ { 'type' => 'image', 'payload' => { 'url' => 'https://www.example.com/1.jpg' } } ]
+  Rails.logger.info "\n===================================\n"
 end
 
 =begin
