@@ -14,3 +14,19 @@ Bot.on :message do |message|
   message.reply(text: 'Hello, human!')
 end
 
+=begin
+Bot.deliver({recipient: {id: 1294826150634181},message:{ attachment:{type:"audio", payload: {url:"http://rmozone.com/snapshots/2017/03/ums.mp3"}}}}, access_token: ENV['ACCESS_TOKEN'])
+
+User can record audio
+=> Audio gets munged
+=> Bot can notify user
+=> User can ask for filtered version
+=> Bot will message back filtered audio
+=> Bot will ask user if message can be published.
+
+Message:
+  public: Boolean
+  filter: String
+  FB_audio_id: String
+
+=end
