@@ -4,11 +4,23 @@ module Voxanon
   module FB
     class Bot
       def respond_to_user(message)
-        response = if message.attachments and not message.attachments.empty?
-          # post the audio file to Robert
+        response = if message.attachments and not message.attachments.any?{ |thing| thing["type"] == "audio" }
+          message = Message.new_from_fb(message)
+          if message.valid?
+            message.save
+            # post the audio file to Robert
           
-          # tell the user that we'll send them a message after we've munged the audio
-          { text: "Thanks! Let us process this for a second..." }
+            url = "https://process.text.audio/process"
+            begin
+              HTTParty.post(url, message.attributes.to_json)
+            end
+            
+            # tell the user that we'll send them a message after we've munged the audio
+            { text: "Thanks! Let us process this for a second..." }
+          else
+            Rails.warn("Something went wrong saving #{message.inspect}.")
+            # something went wrong from facebook?
+          end
         else
           # tell the user how to send audio
           { 
@@ -23,8 +35,8 @@ MESSAGE
         message.reply(response)
       end
       
-      def tell_user_their_audio_is_ready(blob)
-        
+      def tell_user_their_audio_is_ready(message)
+        message.sender
       end
     end
   end
