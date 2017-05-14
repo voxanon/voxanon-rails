@@ -1,6 +1,10 @@
 class MessagesController < ApplicationController
   
-  def list
+  def index
+    render
+  end
+  
+  def show
     render
   end
 end
